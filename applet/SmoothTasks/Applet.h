@@ -148,6 +148,9 @@ public:
 	
 	void dumpItems();
 	
+	Q_INVOKABLE bool hasLauncher(const QString& storageId);
+	Q_INVOKABLE bool addLauncher(const QString& storageId);
+
 private:
 	void reloadItems();
 	void connectRootGroup();

@@ -514,6 +514,44 @@ void Applet::dumpItems() {
 	qDebug("\n");
 }
 
+bool Applet::hasLauncher(const QString& storageId)
+{
+	KService::Ptr service = KService::serviceByStorageId(storageId);
+
+	if (service) {
+		QString path = service->entryPath();
+
+		if (path.isEmpty()) {
+			path = service->exec();
+		}
+
+		if (!path.isEmpty()) {
+			return m_groupManager->launcherExists(KUrl::fromPath(path));
+		}
+	}
+
+	return false;
+}
+
+bool Applet::addLauncher(const QString& storageId)
+{
+	KService::Ptr service = KService::serviceByStorageId(storageId);
+
+	if (service) {
+		QString path = service->entryPath();
+
+		if (path.isEmpty()) {
+			path = service->exec();
+		}
+
+		if (!path.isEmpty()) {
+			return m_groupManager->addLauncher(KUrl::fromPath(path), KIcon(service->icon()));
+		}
+	}
+
+	return false;
+}
+
 void Applet::dropEvent(QGraphicsSceneDragDropEvent *event) {
 	KUrl::List urls = KUrl::List::fromMimeData(event->mimeData());
 	if (urls.count() > 0) {
