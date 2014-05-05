@@ -215,13 +215,13 @@ protected:
 
 public slots:
 	void updateActiveIconIndex(TaskItem *item);
+    void configChanged();
 	void reload();
 
 private slots:
 	//void reconnectGroupManager();
 	void updateFullLimit();
 	void widgetValueChanged();
-	void configuration();
 	void loadDefaults();
 	void itemAboutToBeAdded(AbstractGroupableItem *item, int index);
 	void itemAboutToBeRemoved(AbstractGroupableItem *item);

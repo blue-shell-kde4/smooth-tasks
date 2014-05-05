@@ -152,9 +152,6 @@ void Applet::init() {
 	connect( m_groupManager, SIGNAL(reload()),
 		this, SLOT(reload()));
 
-	connect( this, SIGNAL(settingsChanged()),
-		this, SLOT(configuration()));
-
 	connect( KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)),
 		this, SLOT(currentDesktopChanged()));
 
@@ -167,10 +164,10 @@ void Applet::init() {
 	//emit settingsChanged();
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	setMaximumSize(INT_MAX, INT_MAX);
-        configuration();
-	//m_groupManager->setLaunchersLocked(true);
+
 	m_groupManager->setSeparateLaunchers(false);
-        m_groupManager->readLauncherConfig();
+
+	configChanged();
 }
 
 void Applet::itemAboutToBeAdded(AbstractGroupableItem *, int)
@@ -1102,7 +1099,7 @@ void Applet::widgetValueChanged() {
 //	}
 }
 
-void Applet::configuration() {	
+void Applet::configChanged() {
 	KConfigGroup cg = config();
 
 	m_taskSpacing  = cg.readEntry("taskSpacing", 5);
@@ -1377,6 +1374,8 @@ void Applet::configuration() {
 	m_groupManager->setShowOnlyCurrentScreen(cg.readEntry("showOnlyCurrentScreen", false));
 	m_groupManager->setShowOnlyMinimized(cg.readEntry("showOnlyMinimized", false));
 	m_groupManager->reconnect();
+
+	m_groupManager->readLauncherConfig();
 
 	for (int i = 0; i < m_layout->count(); ++ i) {
 		m_layout->itemAt(i)->settingsChanged();
